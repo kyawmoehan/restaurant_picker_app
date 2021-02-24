@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import './wdiget/new_restaurant.dart';
+import './wdiget/restaurant_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,12 +49,32 @@ class _MyHomePageState extends State<MyHomePage> {
     _restaurants.add(restaurant);
   }
 
+  void _deleteRestaurant(int index) {
+    setState(() {
+      _restaurants.removeAt(index);
+    });
+  }
+
   void _startAddNewRestaurant(BuildContext ctx) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: ctx,
         builder: (_) {
           return NewRestaurant(_addNewRestaurant);
+        });
+  }
+
+  void _startRestaurantList(BuildContext ctx) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: ctx,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(15),
+          ),
+        ),
+        builder: (_) {
+          return RestaurantList(_restaurants, _deleteRestaurant);
         });
   }
 
@@ -81,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.white,
           label: 'Restaurant List',
           labelStyle: TextStyle(fontSize: 18.0),
-          onTap: () => print('FIRST CHILD'),
+          onTap: () => {_startRestaurantList(context)},
         ),
         SpeedDialChild(
           child: Icon(Icons.add),
