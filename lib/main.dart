@@ -14,6 +14,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+      ),
       home: MyHomePage(),
     );
   }
@@ -38,20 +46,31 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex;
 
   void _updateIndex() {
+    int index;
+    int previousIndex = _currentIndex;
     final random = Random();
-    final index = random.nextInt(_restaurants.length);
+    index = random.nextInt(_restaurants.length);
+    while (index == previousIndex) {
+      index = random.nextInt(_restaurants.length);
+    }
     setState(() {
       _currentIndex = index;
     });
   }
 
   void _addNewRestaurant(String restaurant) {
-    _restaurants.add(restaurant);
+    setState(() {
+      _restaurants.add(restaurant);
+    });
   }
 
   void _deleteRestaurant(int index) {
     setState(() {
       _restaurants.removeAt(index);
+      if (_restaurants.isNotEmpty) {
+        final newIndex = Random().nextInt(_restaurants.length);
+        _currentIndex = newIndex;
+      }
     });
   }
 
@@ -126,14 +145,17 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Text('What do you want  to eat?'),
             if (_currentIndex != null)
-              Text(
-                _restaurants[_currentIndex],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              _restaurants.isEmpty
+                  ? Text(
+                      'No Restaurant Find!',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.title,
+                    )
+                  : Text(
+                      _restaurants[_currentIndex],
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.title,
+                    ),
             Padding(
               padding: EdgeInsets.only(top: 50),
             ),
