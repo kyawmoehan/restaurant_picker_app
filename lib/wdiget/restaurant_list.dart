@@ -17,6 +17,14 @@ class _RestaurantListState extends State<RestaurantList> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final isLandScape = mediaQuery.orientation == Orientation.landscape;
+    final containerHeight = isLandScape
+        ? mediaQuery.size.height * 0.8
+        : mediaQuery.size.height * 0.6;
+    final listHeight = isLandScape
+        ? mediaQuery.size.height * 0.63
+        : mediaQuery.size.height * 0.53;
     final closeIcon = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -31,7 +39,7 @@ class _RestaurantListState extends State<RestaurantList> {
     );
     return widget.restaurants.isEmpty
         ? Container(
-            height: MediaQuery.of(context).size.height * 0.55,
+            height: containerHeight,
             child: Column(
               children: [
                 closeIcon,
@@ -41,12 +49,12 @@ class _RestaurantListState extends State<RestaurantList> {
           )
         : SingleChildScrollView(
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.55,
+              height: containerHeight,
               child: Column(
                 children: [
                   closeIcon,
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.4,
+                    height: listHeight,
                     child: ListView.builder(
                       itemCount: widget.restaurants.length,
                       itemBuilder: (ctx, index) {

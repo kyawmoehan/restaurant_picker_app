@@ -78,6 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
         isScrollControlled: true,
         context: ctx,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(15),
+          ),
+        ),
         builder: (_) {
           return NewRestaurant(_addNewRestaurant);
         });
